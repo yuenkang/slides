@@ -76,6 +76,7 @@
   justify-content: center;
   align-items: center;
   text-align: center !important;
+  position: relative;
 }
 
 .title-slide h1 {
@@ -92,12 +93,6 @@
   font-size: 1.1em;
   color: var(--text-dim);
   font-weight: 300;
-}
-
-.title-slide .author {
-  margin-top: 2em;
-  font-size: 0.7em;
-  color: var(--text-dim);
 }
 
 /* ===== Section Title ===== */
