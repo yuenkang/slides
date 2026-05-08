@@ -1210,12 +1210,12 @@ export function AgentIntroPresentation({ onBack }: AgentIntroProps) {
           transition="zoom"
           className="final-slide"
           backgroundGradient="radial-gradient(ellipse at 50% 40%, rgba(17,153,142,0.15) 0%, transparent 60%)"
-          notes="今天是入门版。如果想深入到工程细节 — Harness 四大组成、上下文工程、工具设计 ACI 原则、记忆系统、多 Agent 编排、评测体系 — 可以看技术深讲版（agent-slides）。谢谢大家。"
+          notes="今天是入门版。如果想深入到工程细节 — Harness 四大组成、上下文工程、工具设计 ACI 原则、记忆系统、多 Agent 编排、评测体系 — 可以看技术深讲版（agent）。谢谢大家。"
         >
           <div className="ai-big-emoji">🚀</div>
           <h2>想深入？</h2>
           <p style={{ fontSize: '0.85em', color: 'rgba(255,255,255,0.75)', maxWidth: '900px', textAlign: 'center', marginTop: '12px' }}>
-            技术深讲版 <code>agent-slides</code> 涵盖 12 个工程主题
+            技术深讲版 <code>agent</code> 涵盖 12 个工程主题
           </p>
           <Fragment animation="fade-up" as="div">
             <div className="ai-tag-row" style={{ flexWrap: 'wrap', justifyContent: 'center', maxWidth: '1100px', marginTop: '20px' }}>

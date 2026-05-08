@@ -11,7 +11,7 @@ interface Project {
 
 const projects: Project[] = [
   {
-    id: 'agent-slides',
+    id: 'agent',
     icon: '🤖',
     title: '你不知道的 Agent',
     description: '原理、架构与工程实践 — 基于 Tw93 文章的技术分享，涵盖 Agent Loop、Harness、上下文工程、工具设计等 12 个主题。',

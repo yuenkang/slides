@@ -4,12 +4,12 @@ import { AgentPresentation } from './presentations/agent/AgentPresentation';
 import { AgentIntroPresentation } from './presentations/agent-intro/AgentIntroPresentation';
 import { PlaygroundPresentation } from './presentations/playground/PlaygroundPresentation';
 
-type Page = 'home' | 'agent-slides' | 'agent-intro' | 'playground';
+type Page = 'home' | 'agent' | 'agent-intro' | 'playground';
 
 function getInitialPage(): Page {
   const params = new URLSearchParams(window.location.search);
   const deck = params.get('deck');
-  if (deck === 'agent-slides' || deck === 'agent-intro' || deck === 'playground') return deck;
+  if (deck === 'agent' || deck === 'agent-intro' || deck === 'playground') return deck;
   return 'home';
 }
 
@@ -42,7 +42,7 @@ export function App() {
     }
   }, []);
 
-  if (page === 'agent-slides') {
+  if (page === 'agent') {
     return <AgentPresentation onBack={() => navigateTo('home')} />;
   }
   if (page === 'agent-intro') {
