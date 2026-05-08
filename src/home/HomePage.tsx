@@ -19,6 +19,14 @@ const projects: Project[] = [
     gradient: 'linear-gradient(135deg, #6C63FF, #00D2FF)',
   },
   {
+    id: 'agent-intro',
+    icon: '🌱',
+    title: 'AI Agent 入门',
+    description: '写给全公司的入门指南 — 不谈代码，用游戏社交业务场景，直观讲清 Agent 是什么、能做什么、怎么用好它。',
+    tags: ['AI Agent', 'Beginner', 'Introduction'],
+    gradient: 'linear-gradient(135deg, #11998e, #38ef7d)',
+  },
+  {
     id: 'playground',
     icon: '🎨',
     title: 'Slide Playground',
