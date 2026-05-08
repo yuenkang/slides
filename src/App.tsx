@@ -34,6 +34,14 @@ export function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('print-pdf') && params.get('autoprint')) {
+      const timer = window.setTimeout(() => window.print(), 1500);
+      return () => window.clearTimeout(timer);
+    }
+  }, []);
+
   if (page === 'agent-slides') {
     return <AgentPresentation onBack={() => navigateTo('home')} />;
   }
