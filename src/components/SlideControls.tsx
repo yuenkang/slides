@@ -1,10 +1,43 @@
 import { useReveal } from '@revealjs/react';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { DocsViewer, type DocFile } from './DocsViewer';
 
-export function SlideControls() {
+const ALL_DOCS = import.meta.glob('../presentations/*/docs/*.md', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>;
+
+function loadDocsFor(docsDir: string): DocFile[] {
+  return Object.entries(ALL_DOCS)
+    .filter(([p]) => p.includes(`/presentations/${docsDir}/docs/`))
+    .map(([p, content]) => ({ name: p.split('/').pop()!, content }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function dirFromMetaUrl(url: string): string | undefined {
+  return url.match(/\/presentations\/([^/]+)\//)?.[1];
+}
+
+interface SlideControlsProps {
+  /**
+   * 传 `import.meta.url`，组件自动从中提取演示目录名，
+   * 用于定位 src/presentations/<dir>/docs/*.md。
+   * 这样目录名始终和实际文件路径一致，不会因重命名漂移。
+   */
+  metaUrl?: string;
+}
+
+export function SlideControls({ metaUrl }: SlideControlsProps = {}) {
   const reveal = useReveal();
   const fullscreenBtnRef = useRef<HTMLButtonElement>(null);
+  const [docsOpen, setDocsOpen] = useState(false);
+
+  const docs = useMemo(() => {
+    const dir = metaUrl ? dirFromMetaUrl(metaUrl) : undefined;
+    return dir ? loadDocsFor(dir) : [];
+  }, [metaUrl]);
 
   const toggleOverview = useCallback(() => {
     reveal?.toggleOverview();
@@ -56,6 +89,7 @@ export function SlideControls() {
   }, []);
 
   return createPortal(
+    <>
     <div className="slide-controls">
       <button
         className="slide-control-btn"
@@ -75,6 +109,17 @@ export function SlideControls() {
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><line x1="10" y1="9" x2="8" y2="9" />
         </svg>
       </button>
+      {docs.length > 0 && (
+        <button
+          className="slide-control-btn"
+          onClick={() => setDocsOpen(true)}
+          title={`查看文档 (${docs.length})`}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+          </svg>
+        </button>
+      )}
       <button
         className="slide-control-btn"
         onClick={exportPdf}
@@ -93,7 +138,11 @@ export function SlideControls() {
           <path d="M8 3H5a2 2 0 0 0-2 2v3" /><path d="M21 8V5a2 2 0 0 0-2-2h-3" /><path d="M3 16v3a2 2 0 0 0 2 2h3" /><path d="M16 21h3a2 2 0 0 0 2-2v-3" />
         </svg>
       </button>
-    </div>,
+    </div>
+    {docsOpen && docs.length > 0 && (
+      <DocsViewer docs={docs} onClose={() => setDocsOpen(false)} />
+    )}
+    </>,
     document.body
   );
 }

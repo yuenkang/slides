@@ -178,7 +178,7 @@ export function AgentIntroPresentation({ onBack }: AgentIntroProps) {
         }}
         plugins={[RevealHighlight, RevealNotes]}
       >
-        <SlideControls />
+        <SlideControls metaUrl={import.meta.url} />
 
         {/* ============================================================ */}
         {/* PART 0 · 开篇互动                                              */}

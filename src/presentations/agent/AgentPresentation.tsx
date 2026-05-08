@@ -86,7 +86,7 @@ export function AgentPresentation({ onBack }: AgentPresentationProps) {
         }}
         plugins={[RevealHighlight, RevealNotes]}
       >
-        <SlideControls />
+        <SlideControls metaUrl={import.meta.url} />
         {/* ==================== TITLE ==================== */}
         <Slide
           transition="zoom"

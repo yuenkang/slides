@@ -42,7 +42,7 @@ export function PlaygroundPresentation({ onBack }: PlaygroundPresentationProps) 
         }}
         plugins={[RevealNotes]}
       >
-        <SlideControls />
+        <SlideControls metaUrl={import.meta.url} />
 
         {/* ==================== TITLE ==================== */}
         <Slide
