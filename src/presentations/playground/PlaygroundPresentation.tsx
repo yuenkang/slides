@@ -7,6 +7,12 @@ import { BackButton } from '../../components/BackButton';
 import { SlideControls } from '../../components/SlideControls';
 import './styles.css';
 
+const DOCS = import.meta.glob('./docs/*.md', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>;
+
 interface PlaygroundPresentationProps {
   onBack?: () => void;
 }
@@ -42,7 +48,7 @@ export function PlaygroundPresentation({ onBack }: PlaygroundPresentationProps) 
         }}
         plugins={[RevealNotes]}
       >
-        <SlideControls metaUrl={import.meta.url} />
+        <SlideControls docs={DOCS} />
 
         {/* ==================== TITLE ==================== */}
         <Slide

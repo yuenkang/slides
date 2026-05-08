@@ -9,6 +9,12 @@ import { BackButton } from '../../components/BackButton';
 import { SlideControls } from '../../components/SlideControls';
 import './styles.css';
 
+const DOCS = import.meta.glob('./docs/*.md', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>;
+
 interface AgentIntroProps {
   onBack?: () => void;
 }
@@ -178,7 +184,7 @@ export function AgentIntroPresentation({ onBack }: AgentIntroProps) {
         }}
         plugins={[RevealHighlight, RevealNotes]}
       >
-        <SlideControls metaUrl={import.meta.url} />
+        <SlideControls docs={DOCS} />
 
         {/* ============================================================ */}
         {/* PART 0 · 开篇互动                                              */}

@@ -3,41 +3,25 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { DocsViewer, type DocFile } from './DocsViewer';
 
-const ALL_DOCS = import.meta.glob('../presentations/*/docs/*.md', {
-  query: '?raw',
-  import: 'default',
-  eager: true,
-}) as Record<string, string>;
-
-function loadDocsFor(docsDir: string): DocFile[] {
-  return Object.entries(ALL_DOCS)
-    .filter(([p]) => p.includes(`/presentations/${docsDir}/docs/`))
-    .map(([p, content]) => ({ name: p.split('/').pop()!, content }))
-    .sort((a, b) => a.name.localeCompare(b.name));
-}
-
-function dirFromMetaUrl(url: string): string | undefined {
-  return url.match(/\/presentations\/([^/]+)\//)?.[1];
-}
-
 interface SlideControlsProps {
   /**
-   * 传 `import.meta.url`，组件自动从中提取演示目录名，
-   * 用于定位 src/presentations/<dir>/docs/*.md。
-   * 这样目录名始终和实际文件路径一致，不会因重命名漂移。
+   * 当前演示的 docs 文件，传入 `import.meta.glob('./docs/*.md', { query: '?raw', import: 'default', eager: true })` 即可。
+   * 用相对路径让 Vite 在构建时把目录绑定到当前演示文件，重命名目录路径自动跟随。
    */
-  metaUrl?: string;
+  docs?: Record<string, string>;
 }
 
-export function SlideControls({ metaUrl }: SlideControlsProps = {}) {
+export function SlideControls({ docs: docsRaw }: SlideControlsProps = {}) {
   const reveal = useReveal();
   const fullscreenBtnRef = useRef<HTMLButtonElement>(null);
   const [docsOpen, setDocsOpen] = useState(false);
 
-  const docs = useMemo(() => {
-    const dir = metaUrl ? dirFromMetaUrl(metaUrl) : undefined;
-    return dir ? loadDocsFor(dir) : [];
-  }, [metaUrl]);
+  const docs = useMemo<DocFile[]>(() => {
+    if (!docsRaw) return [];
+    return Object.entries(docsRaw)
+      .map(([p, content]) => ({ name: p.split('/').pop()!, content }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [docsRaw]);
 
   const toggleOverview = useCallback(() => {
     reveal?.toggleOverview();

@@ -9,6 +9,12 @@ import { BackButton } from '../../components/BackButton';
 import { SlideControls } from '../../components/SlideControls';
 import './styles.css';
 
+const DOCS = import.meta.glob('./docs/*.md', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>;
+
 const AGENT_LOOP_CODE = `const messages: MessageParam[] = [{ role: "user", content: userInput }];
 while (true) {
   const response = await client.messages.create({
@@ -86,7 +92,7 @@ export function AgentPresentation({ onBack }: AgentPresentationProps) {
         }}
         plugins={[RevealHighlight, RevealNotes]}
       >
-        <SlideControls metaUrl={import.meta.url} />
+        <SlideControls docs={DOCS} />
         {/* ==================== TITLE ==================== */}
         <Slide
           transition="zoom"
